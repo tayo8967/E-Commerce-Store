@@ -43,19 +43,19 @@ export const createProduct = async (req, res) => {
     try {
         const {name, description, price, image, category} = req.body;
 
-        let cloudinaryRespone = null;
+        let cloudinaryResponse = null;
 
         if (image) {
-            cloudinaryRespone = await cloudinary.uploader.upload(image, {folder: "products"});
+            cloudinaryResponse = await cloudinary.uploader.upload(image, {folder: "products"});
         }
 
-        const product = new Product({
+        const product = await Product.create({
             name,
             description,
             price,
             image: cloudinaryResponse.secure_url ? cloudinaryResponse.secure_url : "",
             category
-        })
+        });
 
         res.status(201).json(product);
     } catch (error) {
