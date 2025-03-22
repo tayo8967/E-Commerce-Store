@@ -1,10 +1,11 @@
 import Product from "../models/product.model.js";
 import cloudinary from "../lib/cloudinary.js";
+import { redis } from "../lib/redis.js";
 
 export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find({});
-        res.json(products);
+        res.json({ products });
     } catch (error) {
         console.log("Error in getAllProducts controller:", error.message);
         res.status(500).json({ message: "Server error:", error: error.message });
@@ -152,8 +153,8 @@ async function updateFeaturedProductsCache() {
     try {
         // The lean() method is used to return a plain JavaScript object instead of a MongoDB document
 
-        const featureProducts = await Product.find({ isFeatured: true }).lean();
-        await redis.set("featuredProducts", JSON.stringify(featuredProducts));
+        const featuredProducts = await Product.find({ isFeatured: true }).lean();
+        await redis.set("featured_products", JSON.stringify(featuredProducts));
     } catch (error) {
         console.log("Error updating featured products cache:", error.message);
     }
