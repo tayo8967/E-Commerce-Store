@@ -24,7 +24,8 @@ export const createCheckoutSession = async (req, res) => {
                         images: [products.image]
                     },
                     unit_amount: amount
-                }
+                },
+                quantity: products.quantity || 1
             }
         });
 
@@ -50,7 +51,7 @@ export const createCheckoutSession = async (req, res) => {
                 couponCode: couponCode || "",
                 products: JSON.stringify(
                     products.map((p) => ({
-                        id: p_id,
+                        id: p._id,
                         quantity: p.quantity,
                         price: p.price
                     }))
