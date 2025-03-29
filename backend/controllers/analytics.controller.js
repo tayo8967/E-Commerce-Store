@@ -14,7 +14,7 @@ export const getAnalytics = async (req, res) => {
         res.json({
             analyticsData,
             dailySalesData
-        })
+        });
     } catch (error) {
         console.log("Error in getAnalytics controller", error.message);
         res.status(500).json({ message: "Server error", error: error.message });
@@ -90,4 +90,6 @@ function getDatesInRange(startDate, endDate) {
         dates.push(currentDate.toISOString().split('T')[0]);
         currentDate.setDate(currentDate.getDate() + 1);
     }
+
+    return dates;
 }
